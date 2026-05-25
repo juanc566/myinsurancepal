@@ -139,6 +139,22 @@ body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height:
 footer { background: var(--navy); color: #6a8aaa; font-size: 11px; padding: 20px; text-align: center; line-height: 1.7; }
 footer a { color: #a8c4e8; }
 </style>
+  <!-- TrustedForm -->
+<script type="text/javascript">
+  (function() {
+    var tf = document.createElement('script');
+    tf.type = 'text/javascript';
+    tf.async = true;
+    tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
+      '://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=' +
+      new Date().getTime() + Math.random();
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tf, s);
+  })();
+</script>
+<noscript>
+  <img src='https://api.trustedform.com/ns.gif' />
+</noscript>
+<!-- End TrustedForm -->
 </head>
 <body>
 
