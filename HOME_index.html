@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyInsurancePal — Compare Insurance Quotes</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0f2744;
+  --blue: #1a4a8a;
+  --accent: #e05c2a;
+  --accent2: #f0874a;
+  --light: #f5f2ed;
+  --white: #ffffff;
+  --gray: #8a8a8a;
+  --border: #e0dbd3;
+  --success: #2a9d5c;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height: 100vh; color: var(--navy); }
+
+/* TOP BAR */
+.topbar {
+  background: #0a1e36;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.mip-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(224,92,42,0.4);
+  border-radius: 20px;
+  padding: 4px 12px 4px 6px;
+}
+.mip-logo-sm { width: 22px; height: 22px; flex-shrink: 0; }
+.mip-verified span { color: #e8c9b8; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.topbar-divider { color: rgba(255,255,255,0.2); font-size: 12px; }
+.topbar-text { color: #7a9ab8; font-size: 11px; }
+
+/* HERO */
+.hero { background: var(--navy); padding: 28px 20px 36px; text-align: center; }
+.logo { font-family: 'DM Serif Display', serif; color: white; font-size: 24px; letter-spacing: -0.5px; margin-bottom: 20px; display: inline-block; }
+.logo span { color: var(--accent2); }
+.hero h1 { font-family: 'DM Serif Display', serif; color: white; font-size: clamp(24px, 5vw, 36px); line-height: 1.2; margin-bottom: 12px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.hero h1 em { color: var(--accent2); font-style: normal; }
+.hero-sub { color: #a8c4e8; font-size: 15px; max-width: 420px; margin: 0 auto 8px; line-height: 1.6; }
+
+/* CARDS */
+.cards-wrap { max-width: 580px; margin: 0 auto; padding: 32px 16px 40px; }
+.cards-label { text-align: center; font-size: 13px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 20px; }
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; } }
+
+.ins-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--navy);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba(15,39,68,0.08);
+  transition: all 0.25s;
+  display: block;
+}
+.ins-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(15,39,68,0.15); }
+
+.ins-card-icon {
+  width: 72px; height: 72px;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 34px;
+}
+.ins-card-icon.life { background: #e6f1fb; }
+.ins-card-icon.auto { background: #eaf3de; }
+
+.ins-card h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 10px; }
+.ins-card p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 22px; }
+
+.ins-card-cta {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.ins-card:hover .ins-card-cta { background: #c94f20; }
+
+/* TRUST */
+.trust-strip { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px; display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 6px; color: var(--gray); font-size: 12px; }
+.trust-item::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+footer { background: var(--navy); color: #6a8aaa; font-size: 11px; padding: 20px; text-align: center; line-height: 1.7; }
+footer a { color: #a8c4e8; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="mip-verified">
+    <svg class="mip-logo-sm" viewBox="0 0 22 22" fill="none">
+      <path d="M11 2L3 6.5v9L11 20l8-4.5v-9L11 2z" fill="#e05c2a" opacity="0.9"/>
+      <path d="M11 5L5.5 8.25v5.5L11 17l5.5-3.25v-5.5L11 5z" fill="white" opacity="0.15"/>
+      <path d="M8 11l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>MIP Verified</span>
+  </div>
+  <span class="topbar-divider">·</span>
+  <span class="topbar-text">100% Free · No obligation · 2 minutes</span>
+</div>
+
+<div class="hero">
+  <div class="logo">MyInsurance<span>Pal</span></div>
+  <h1>Compare top insurance quotes <em>for free</em></h1>
+  <p class="hero-sub">Find the right coverage in minutes. No spam calls. No hidden fees.</p>
+</div>
+
+<div class="cards-wrap">
+  <p class="cards-label">What type of insurance are you looking for?</p>
+  <div class="cards-grid">
+
+    <a class="ins-card" href="/life/">
+      <div class="ins-card-icon life">🛡️</div>
+      <h2>Life Insurance</h2>
+      <p>Protect your family's financial future with a policy that fits your needs.</p>
+      <span class="ins-card-cta">Get free quotes →</span>
+    </a>
+
+    <a class="ins-card" href="/auto/">
+      <div class="ins-card-icon auto">🚗</div>
+      <h2>Auto Insurance</h2>
+      <p>See what top carriers would charge for your exact coverage today.</p>
+      <span class="ins-card-cta">Compare rates →</span>
+    </a>
+
+  </div>
+</div>
+
+<div class="trust-strip">
+  <span class="trust-item">100% secure</span>
+  <span class="trust-item">2 minutes to compare</span>
+  <span class="trust-item">47,000+ drivers helped</span>
+  <span class="trust-item">No spam calls</span>
+</div>
+
+<footer>
+  <p>© 2026 MyInsurancePal · ACQ Lab Media LLC · 1021 E Lincolnway Suite 10325, Cheyenne WY 82001</p>
+  <p style="margin-top:6px;"><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Use</a></p>
+</footer>
+
+</body>
+</html>
