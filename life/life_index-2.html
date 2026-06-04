@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyInsurancePal — Life Insurance Quotes</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1534414721538351');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1534414721538351&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0f2744;
+  --blue: #1a4a8a;
+  --accent: #e05c2a;
+  --accent2: #f0874a;
+  --light: #f5f2ed;
+  --gray: #8a8a8a;
+  --border: #e0dbd3;
+  --success: #2a9d5c;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height: 100vh; color: var(--navy); }
+
+.topbar { background: #0a1e36; padding: 8px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.mip-verified { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(224,92,42,0.4); border-radius: 20px; padding: 4px 12px 4px 6px; }
+.mip-logo-sm { width: 22px; height: 22px; flex-shrink: 0; }
+.mip-verified span { color: #e8c9b8; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.topbar-divider { color: rgba(255,255,255,0.2); font-size: 12px; }
+.topbar-text { color: #7a9ab8; font-size: 11px; }
+
+.hero { background: var(--navy); padding: 12px 20px 0; text-align: center; }
+.logo { font-family: 'DM Serif Display', serif; color: white; font-size: 16px; letter-spacing: -0.5px; margin-bottom: 8px; display: inline-block; text-decoration: none; }
+.logo span { color: var(--accent2); }
+
+.urgency-bar { background: rgba(224,92,42,0.15); border: 1px solid rgba(224,92,42,0.3); border-radius: 8px; padding: 6px 12px; max-width: 480px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.urgency-bar span { color: var(--accent2); font-size: 12px; font-weight: 500; }
+.urgency-dot { width: 7px; height: 7px; background: var(--accent2); border-radius: 50%; animation: pulse 1.5s infinite; flex-shrink: 0; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero h1 { font-family: 'DM Serif Display', serif; color: white; font-size: clamp(22px, 5vw, 34px); line-height: 1.2; margin-bottom: 0; padding-bottom: 12px; max-width: 580px; margin-left: auto; margin-right: auto; }
+.hero h1 em { color: var(--accent2); font-style: normal; }
+.hero-sub { display: none; }
+
+/* QUIZ SECTION */
+.quiz-wrap { max-width: 520px; margin: 0 auto; padding: 0 16px 40px; }
+.quiz-card { background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(15,39,68,0.12); overflow: hidden; margin-top: -16px; position: relative; z-index: 2; }
+.quiz-inner { padding: 22px 24px 24px; }
+.quiz-q { font-family: 'DM Serif Display', serif; font-size: 19px; color: var(--navy); margin-bottom: 4px; text-align: center; }
+.quiz-hint { font-size: 12px; color: var(--gray); text-align: center; margin-bottom: 16px; }
+
+.progress-wrap { padding: 16px 24px 0; }
+.progress-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.progress-label { font-size: 11px; color: var(--gray); }
+.progress-pct { font-size: 11px; color: var(--blue); font-weight: 600; }
+.progress-bar { height: 4px; background: #eee; border-radius: 10px; overflow: hidden; margin-bottom: 0; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent2)); border-radius: 10px; transition: width 0.4s ease; }
+
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
+.quiz-opt {
+  padding: 14px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  text-align: center;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+.quiz-opt:hover { border-color: var(--blue); background: #f0f5ff; transform: translateY(-1px); }
+.quiz-opt .opt-emoji { font-size: 22px; }
+.quiz-opt .opt-label { font-size: 14px; font-weight: 600; }
+.quiz-opt .opt-sub { font-size: 11px; color: var(--gray); font-weight: 400; }
+
+/* RESULT STATE */
+.quiz-result { display: none; padding: 20px 24px 24px; }
+.result-header { background: var(--success); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; cursor: pointer; text-decoration: none; }
+.result-header:hover { background: #238a4e; }
+.result-header-text { font-size: 14px; font-weight: 600; color: white; flex: 1; }
+.result-header-arrow { color: white; font-size: 16px; }
+.result-match { background: #fff8e6; border: 1.5px solid #f5d87a; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.result-match-title { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.result-match-sub { font-size: 12px; color: #666; line-height: 1.5; }
+.cta-btn {
+  display: block;
+  background: var(--accent);
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 15px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.cta-btn:hover { background: #c94f20; transform: translateY(-1px); }
+.cta-btn-secondary { display: block; background: white; color: var(--blue); border: 1.5px solid var(--blue); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 13px 24px; border-radius: 12px; text-decoration: none; transition: all 0.2s; width: 100%; text-align: center; margin-bottom: 8px; }
+.cta-btn-secondary:hover { background: #f0f5ff; }
+.cta-sub { font-size: 11px; color: var(--gray); margin-top: 6px; text-align: center; }
+
+/* TRUST ROW */
+.trust-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 20px 28px; border-top: 1px solid var(--border); }
+.trust-item { display: flex; align-items: center; gap: 5px; color: var(--gray); font-size: 12px; }
+.trust-item::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+/* BENEFITS */
+.benefits { max-width: 520px; margin: 0 auto; padding: 32px 16px; }
+.benefits h2 { font-family: 'DM Serif Display', serif; font-size: 22px; text-align: center; margin-bottom: 20px; color: var(--navy); }
+.benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .benefits-grid { grid-template-columns: 1fr; } .quiz-options { grid-template-columns: 1fr; } }
+.benefit-card { background: white; border-radius: 14px; padding: 18px; border: 1px solid var(--border); }
+.benefit-icon { font-size: 26px; margin-bottom: 8px; }
+.benefit-title { font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+.benefit-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+/* SOCIAL PROOF */
+.social-proof { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 16px; text-align: center; }
+.stats-row { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; margin-bottom: 24px; }
+.stat-item { text-align: center; }
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--blue); }
+.stat-label { font-size: 11px; color: var(--gray); margin-top: 2px; }
+.testimonials { display: grid; gap: 12px; max-width: 520px; margin: 0 auto; }
+.testimonial { background: var(--light); border-radius: 12px; padding: 16px; text-align: left; }
+.testimonial p { font-size: 13px; line-height: 1.6; color: #444; margin-bottom: 8px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 8px; }
+.author-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.author-name { font-size: 12px; font-weight: 600; color: var(--navy); }
+.author-loc { font-size: 11px; color: var(--gray); }
+.stars { color: #f0a500; font-size: 12px; margin-bottom: 2px; }
+
+.disclosure-box { max-width: 520px; margin: 0 auto 28px; padding: 0 16px; }
+.disclosure-inner { background: #fff7f2; border: 1px solid rgba(224,92,42,0.25); border-radius: 14px; padding: 14px 16px; color: #6a5a50; font-size: 11px; line-height: 1.6; }
+.disclosure-inner strong { color: var(--navy); }
+footer { background: var(--navy); color: #6a8aaa; font-size: 11px; padding: 20px; text-align: center; line-height: 1.7; }
+footer a { color: #a8c4e8; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="mip-verified">
+    <svg class="mip-logo-sm" viewBox="0 0 22 22" fill="none">
+      <path d="M11 2L3 6.5v9L11 20l8-4.5v-9L11 2z" fill="#e05c2a" opacity="0.9"/>
+      <path d="M11 5L5.5 8.25v5.5L11 17l5.5-3.25v-5.5L11 5z" fill="white" opacity="0.15"/>
+      <path d="M8 11l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Secure comparison</span>
+  </div>
+  <span class="topbar-divider">·</span>
+  <span class="topbar-text">Free comparison · No obligation · Quick process</span>
+</div>
+
+<div class="hero">
+  <a class="logo" href="/">MyInsurance<span>Pal</span></a>
+  <div class="urgency-bar">
+    <div class="urgency-dot"></div>
+    <span>Life insurance rates are often lower when you apply earlier</span>
+  </div>
+  <h1>Compare <em>life insurance options</em> in minutes</h1>
+  <p class="hero-sub">Answer one quick question, then continue to view available life insurance options from participating providers.</p>
+</div>
+
+<div class="quiz-wrap">
+  <div class="quiz-card">
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="stepLabel">Step 1 of 2</span>
+        <span class="progress-pct" id="stepPct">50%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:50%"></div>
+      </div>
+    </div>
+
+    <!-- QUESTION 1 -->
+    <div class="quiz-inner" id="quizQuestion">
+      <div class="quiz-q">Do you have people who depend on your income?</div>
+      <div class="quiz-hint">This helps guide you to the right options</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="selectAnswer('yes')">
+          <span class="opt-emoji">👨‍👩‍👧</span>
+          <span class="opt-label">Yes</span>
+          <span class="opt-sub">I have dependents</span>
+        </button>
+        <button class="quiz-opt" onclick="selectAnswer('no')">
+          <span class="opt-emoji">🙋</span>
+          <span class="opt-label">Just me</span>
+          <span class="opt-sub">No dependents yet</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- QUESTION 2 -->
+    <div class="quiz-inner" id="quizQuestion2" style="display:none;">
+      <div class="quiz-q">When were you thinking about getting covered?</div>
+      <div class="quiz-hint">No commitment — just helps match you faster</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="selectTiming('asap')">
+          <span class="opt-emoji">⚡</span>
+          <span class="opt-label">As soon as possible</span>
+          <span class="opt-sub">I want to act now</span>
+        </button>
+        <button class="quiz-opt" onclick="selectTiming('researching')">
+          <span class="opt-emoji">🔍</span>
+          <span class="opt-label">Just researching</span>
+          <span class="opt-sub">Exploring my options</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT STATE -->
+    <div class="quiz-result" id="quizResult">
+      <a href="#" class="result-header" id="ctaHeader">
+        <span style="font-size:16px;">✅</span>
+        <span class="result-header-text">Your profile is ready — see your options!</span>
+        <span class="result-header-arrow">→</span>
+      </a>
+      <div class="result-match">
+        <div class="result-match-title">🔍 Coverage options found for your profile</div>
+        <div class="result-match-sub" id="resultText">Based on your answers, there are life insurance providers ready to show you available options right now. Most people are surprised by what's available — tap below to continue.</div>
+      </div>
+      <a class="cta-btn" href="#" id="ctaBtn">
+        🛡️ Continue to Free Quote Options →
+      </a>
+      <a class="cta-btn-secondary" href="#" id="ctaBtn2">
+        Compare Coverage Options
+      </a>
+      <p class="cta-sub">No obligation · No credit card required · Quick process</p>
+    </div>
+
+    <div class="trust-row">
+      <span class="trust-item">100% free</span>
+      <span class="trust-item">No obligation</span>
+      <span class="trust-item">Participating provider network</span>
+    </div>
+  </div>
+</div>
+<div class="benefits">
+  <h2>What you can compare</h2>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon">🛡️</div>
+      <div class="benefit-title">Term Life</div>
+      <div class="benefit-desc">Affordable coverage for a set period. Often used by families planning for future expenses.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🏦</div>
+      <div class="benefit-title">Whole Life</div>
+      <div class="benefit-desc">Lifetime coverage that builds cash value over time.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🕊️</div>
+      <div class="benefit-title">Final Expense</div>
+      <div class="benefit-desc">Coverage designed to help with end-of-life expenses, depending on eligibility and provider terms.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">⚡</div>
+      <div class="benefit-title">Fast Next Step</div>
+      <div class="benefit-desc">Continue to a participating quote provider to review available options.</div>
+    </div>
+  </div>
+  <!-- CTA 2 -->
+  <div style="text-align:center; margin-top:28px;">
+    <p style="font-size:14px; color:var(--gray); margin-bottom:14px;">Free comparison — no obligation</p>
+    <a class="cta-btn" href="https://afflat3c2.com/trk/lnk/25254F96-B555-4099-A52E-341B68652D6C/?o=26462&c=918277&a=796915&k=08D1746BD4ECA24AC253750EA5C577C5&l=28035&s1=meta_social" style="max-width:360px; display:inline-block;">
+      Compare Free Quote Options →
+    </a>
+  </div>
+</div>
+
+<div class="social-proof">
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Answer a quick question</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Continue securely</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Review available options</div></div>
+  </div>
+  <div class="testimonials">
+    <div class="testimonial">
+      <p><strong>How it works:</strong> MyInsurancePal is a comparison and marketing site. After you click continue, you may be redirected to a participating partner where you can request a life insurance quote.</p>
+    </div>
+    <div class="testimonial">
+      <p><strong>Important:</strong> Coverage, pricing, eligibility, and availability vary by provider and your personal information. Submitting information does not guarantee coverage or approval.</p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:28px; padding: 0 16px;">
+    <p style="font-size:14px; color:var(--gray); margin-bottom:14px;">Ready to review available life insurance options?</p>
+    <a class="cta-btn" href="https://afflat3c2.com/trk/lnk/25254F96-B555-4099-A52E-341B68652D6C/?o=26462&c=918277&a=796915&k=08D1746BD4ECA24AC253750EA5C577C5&l=28035&s1=meta_social" style="max-width:360px; display:inline-block;">
+      Continue to Free Quote Options →
+    </a>
+  </div>
+</div>
+
+<div class="disclosure-box">
+  <div class="disclosure-inner">
+    <strong>Disclosure:</strong> MyInsurancePal is not an insurance carrier, agency, or broker. This page is for informational and comparison purposes only. By clicking a button, you may be redirected to a participating partner site to continue your quote request.
+  </div>
+</div>
+
+<!-- FINAL CTA SECTION -->
+<div style="background:var(--navy); padding:40px 16px; text-align:center;">
+  <p style="font-family:'DM Serif Display',serif; font-size:22px; color:white; margin-bottom:10px; max-width:440px; margin-left:auto; margin-right:auto; line-height:1.3;">Planning ahead can make life insurance easier to compare</p>
+  <p style="font-size:14px; color:#a8c4e8; margin-bottom:24px; max-width:380px; margin-left:auto; margin-right:auto;">Rates and eligibility vary by provider, age, health, coverage amount, and other factors.</p>
+  <a class="cta-btn" href="https://afflat3c2.com/trk/lnk/25254F96-B555-4099-A52E-341B68652D6C/?o=26462&c=918277&a=796915&k=08D1746BD4ECA24AC253750EA5C577C5&l=28035&s1=meta_social" style="max-width:360px; display:inline-block; background:var(--accent2);">
+    Continue to Quote Options →
+  </a>
+  <p style="font-size:11px; color:#6a8aaa; margin-top:12px;">Free · No obligation · Quick process</p>
+</div>
+
+<footer>
+  <p>© 2026 MyInsurancePal · ACQ Lab Media LLC · 1021 E Lincolnway Suite 10325, Cheyenne WY 82001</p>
+  <p style="margin-top:6px;"><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Use</a></p>
+  <p style="margin-top:10px;max-width:600px;margin-left:auto;margin-right:auto;">MyInsurancePal is a marketing and comparison website, not an insurance carrier, agency, or broker. We do not provide insurance advice, make underwriting decisions, or guarantee coverage, pricing, savings, or approval. We may receive compensation when users click links or submit information on partner websites.</p>
+</footer>
+
+<script>
+var AFFILIATE_LINK = 'https://afflat3c2.com/trk/lnk/25254F96-B555-4099-A52E-341B68652D6C/?o=26462&c=918277&a=796915&k=08D1746BD4ECA24AC253750EA5C577C5&l=28035&s1=meta_social';
+var userAnswer1 = '';
+
+var resultTexts = {
+  yes_asap: 'You have dependents and want to act now — that\'s the right instinct. There are providers ready to show you available options immediately. Tap below to continue.',
+  yes_researching: 'You have dependents and are exploring your options — smart move. Review what\'s available now so you can make an informed decision when you\'re ready.',
+  no_asap: 'Even without dependents, locking in coverage now can mean better rates. Providers are ready to show you available options. Tap below to continue.',
+  no_researching: 'Exploring options now puts you ahead. See what life insurance options are available so you\'re ready when the time is right.'
+};
+
+function selectAnswer(answer) {
+  userAnswer1 = answer;
+  document.getElementById('quizQuestion').style.display = 'none';
+  document.getElementById('quizQuestion2').style.display = 'block';
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('stepLabel').textContent = 'Step 2 of 2';
+  document.getElementById('stepPct').textContent = '100%';
+  if (typeof fbq !== 'undefined') {
+    fbq('trackCustom', 'BridgeEngagement', { answer: answer });
+  }
+}
+
+function selectTiming(timing) {
+  var key = userAnswer1 + '_' + timing;
+  var text = resultTexts[key] || resultTexts['yes_researching'];
+  document.getElementById('resultText').textContent = text;
+  document.getElementById('quizQuestion2').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+
+  var finalUrl = buildAffiliateUrl(AFFILIATE_LINK);
+  document.getElementById('ctaHeader').href = finalUrl;
+  document.getElementById('ctaBtn').href = finalUrl;
+  document.getElementById('ctaBtn2').href = finalUrl;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (typeof fbq !== 'undefined') {
+    fbq('trackCustom', 'BridgeEngagement', { timing: timing });
+  }
+}
+
+function buildAffiliateUrl(baseUrl) {
+  var params = new URLSearchParams(window.location.search);
+  var url = new URL(baseUrl, window.location.href);
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach(function(key) {
+    if (params.get(key)) url.searchParams.set(key, params.get(key));
+  });
+  return url.toString();
+}
+
+document.querySelectorAll('.cta-btn, .cta-btn-secondary, .result-header').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    var href = btn.getAttribute('href');
+    if (!href || href === '#') return;
+    e.preventDefault();
+    if (typeof fbq !== 'undefined') {
+      fbq('trackCustom', 'OutboundQuoteClick');
+      fbq('track', 'Lead');
+    }
+    setTimeout(function() { window.location.href = href; }, 400);
+  });
+});
+</script>
+
+</body>
+</html>
