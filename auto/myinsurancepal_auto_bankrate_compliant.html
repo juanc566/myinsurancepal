@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyInsurancePal — Compare Auto Insurance Offers</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0f2744;
+  --blue: #1a4a8a;
+  --accent: #e05c2a;
+  --accent2: #f0874a;
+  --light: #f5f2ed;
+  --white: #ffffff;
+  --gray: #8a8a8a;
+  --border: #e0dbd3;
+  --success: #2a9d5c;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height: 100vh; color: var(--navy); }
+
+/* TOP BAR */
+.topbar {
+  background: #0a1e36;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.mip-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(224,92,42,0.4);
+  border-radius: 20px;
+  padding: 4px 12px 4px 6px;
+}
+.mip-logo-sm { width: 22px; height: 22px; flex-shrink: 0; }
+.mip-verified span { color: #e8c9b8; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.topbar-divider { color: rgba(255,255,255,0.2); font-size: 12px; }
+.topbar-text { color: #7a9ab8; font-size: 11px; }
+
+/* HERO */
+.hero { background: var(--navy); padding: 14px 20px 0; text-align: center; position: relative; overflow: hidden; }
+.logo { font-family: 'DM Serif Display', serif; color: white; font-size: 17px; letter-spacing: -0.5px; margin-bottom: 10px; display: inline-block; }
+.logo span { color: var(--accent2); }
+.hero h1 { font-family: 'DM Serif Display', serif; color: white; font-size: clamp(22px, 5vw, 32px); line-height: 1.2; margin-bottom: 0; max-width: 600px; margin-left: auto; margin-right: auto; padding-bottom: 14px; }
+.hero h1 em { color: var(--accent2); font-style: normal; }
+.hero-sub { display: none; }
+.trust-row { display: none; }
+.trust-item { display: flex; align-items: center; gap: 6px; color: #a8c4e8; font-size: 12px; }
+.trust-item::before { content: '✓'; color: var(--accent2); font-weight: 700; }
+
+/* BELOW-CARD TRUST */
+.below-trust { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; padding: 14px 16px; }
+.below-trust-item { display: flex; align-items: center; gap: 5px; color: var(--gray); font-size: 11px; }
+.below-trust-item::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+/* QUIZ CARD */
+.quiz-wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
+.quiz-card { background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(15,39,68,0.12); overflow: hidden; margin-top: 24px; }
+
+/* PROGRESS */
+.progress-wrap { padding: 20px 28px 0; }
+.progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.progress-label { font-size: 12px; color: var(--gray); font-weight: 500; }
+.progress-pct { font-size: 12px; color: var(--blue); font-weight: 600; }
+.progress-bar { height: 5px; background: #eee; border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent2)); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+/* STEPS */
+.step { display: none; padding: 24px 28px 28px; }
+.step.active { display: block; animation: fadeSlide 0.3s ease; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+.step-q { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1.3; color: var(--navy); margin-bottom: 6px; }
+.step-hint { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+
+/* OPTIONS */
+.options { display: grid; gap: 10px; }
+.options.two-col { grid-template-columns: 1fr 1fr; }
+.opt-btn { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--navy); text-align: left; font-weight: 500; width: 100%; }
+.opt-btn:hover { border-color: var(--blue); background: #f0f5ff; transform: translateY(-1px); }
+.opt-btn .opt-icon { width: 36px; height: 36px; background: var(--light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.opt-btn .opt-text { flex: 1; }
+.opt-btn .opt-text small { display: block; font-size: 11px; color: var(--gray); font-weight: 400; margin-top: 1px; }
+.opt-btn .opt-check { width: 20px; height: 20px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0; }
+.opt-btn.selected { border-color: var(--blue); background: #f0f5ff; }
+.opt-btn.selected .opt-check { background: var(--blue); border-color: var(--blue); display: flex; align-items: center; justify-content: center; }
+.opt-btn.selected .opt-check::after { content: '✓'; color: white; font-size: 11px; }
+
+/* INPUTS */
+.input-group { margin-bottom: 14px; }
+.input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.input-group input { width: 100%; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--navy); outline: none; transition: border-color 0.2s; }
+.input-group input:focus { border-color: var(--blue); }
+
+/* NEXT BUTTON */
+.next-btn { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px; transition: all 0.2s; }
+.next-btn:hover { background: #c94f20; transform: translateY(-1px); }
+
+/* RESULTS STEP */
+.results-header { background: var(--success); padding: 14px 20px; text-align: center; margin: -24px -28px 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.results-header h2 { font-family: 'DM Sans', sans-serif; color: white; font-size: 15px; font-weight: 600; margin: 0; }
+.results-icon { font-size: 18px; flex-shrink: 0; }
+
+.match-box { background: #fff8e6; border: 1.5px solid #f5d87a; border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
+.match-box .match-headline { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.match-box .match-sub { font-size: 13px; color: #666; line-height: 1.5; }
+
+.profile-summary { background: var(--light); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.profile-summary p { font-size: 12px; color: #666; line-height: 1.5; }
+.profile-summary strong { color: var(--navy); }
+
+/* CTA BUTTONS */
+.cta-primary { width: 100%; padding: 17px; background: var(--success); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; display: block; text-align: center; text-decoration: none; }
+.cta-primary:hover { background: #238a4e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(42,157,92,0.35); }
+.cta-secondary { width: 100%; padding: 14px; background: white; color: var(--blue); border: 1.5px solid var(--blue); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; display: block; text-align: center; text-decoration: none; }
+.cta-secondary:hover { background: #f0f5ff; transform: translateY(-1px); }
+.cta-tertiary { width: 100%; padding: 13px; background: transparent; color: var(--gray); border: 1.5px solid var(--border); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: block; text-align: center; text-decoration: none; }
+.cta-tertiary:hover { border-color: var(--gray); color: var(--navy); }
+
+.urgency-note { font-size: 12px; color: var(--accent); text-align: center; margin-bottom: 14px; font-weight: 500; }
+.tcpa { font-size: 11px; color: var(--gray); text-align: center; line-height: 1.6; margin-top: 12px; }
+.tcpa a { color: var(--blue); }
+
+/* FOOTER TRUST */
+.footer-trust { background: white; border-top: 1px solid var(--border); padding: 20px 16px; }
+.footer-trust-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; max-width: 560px; margin: 0 auto; }
+.footer-trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray); }
+.footer-trust-item::before { content: '🔒'; font-size: 13px; }
+
+footer { background: var(--navy); color: #6a8aaa; font-size: 11px; padding: 20px; text-align: center; line-height: 1.7; }
+footer a { color: #a8c4e8; }
+</style>
+
+<!-- TrustedForm -->
+<script type="text/javascript">
+  (function() {
+    var tf = document.createElement('script');
+    tf.type = 'text/javascript';
+    tf.async = true;
+    tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
+      '://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=' +
+      new Date().getTime() + Math.random();
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tf, s);
+  })();
+</script>
+<noscript><img src='https://api.trustedform.com/ns.gif' /></noscript>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="mip-verified">
+    <svg class="mip-logo-sm" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" fill="#e05c2a" opacity="0.9"/>
+      <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>MIP Verified</span>
+  </div>
+  <span class="topbar-divider">·</span>
+  <span class="topbar-text">No obligation · Secure · Takes minutes</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo">MyInsurance<span>Pal</span></div>
+  <h1>When was the last time you <em>compared</em> your options?</h1>
+  <p class="hero-sub">Answer a few quick questions and explore available coverage options in your area.</p>
+  <div class="trust-row">
+    <div class="trust-item">No spam calls</div>
+    <div class="trust-item">100% secure</div>
+    <div class="trust-item">Compare coverage options</div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-wrap">
+  <div class="quiz-card">
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="stepLabel">Step 1 of 4</span>
+        <span class="progress-pct" id="stepPct">25%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:25%"></div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Vehicles -->
+    <div class="step active" id="step1">
+      <div class="step-q">How many vehicles do you need to insure?</div>
+      <div class="step-hint">Help us find available coverage options for your situation</div>
+      <div class="options">
+        <button class="opt-btn" onclick="selectOpt(this, 2, 'vehicles', '1')">
+          <div class="opt-icon">🚗</div>
+          <div class="opt-text">1 vehicle <small>Just one car or truck</small></div>
+          <div class="opt-check"></div>
+        </button>
+        <button class="opt-btn" onclick="selectOpt(this, 2, 'vehicles', '2')">
+          <div class="opt-icon">🚗</div>
+          <div class="opt-text">2 vehicles <small>Multi-car discount available</small></div>
+          <div class="opt-check"></div>
+        </button>
+        <button class="opt-btn" onclick="selectOpt(this, 2, 'vehicles', '3+')">
+          <div class="opt-icon">🚐</div>
+          <div class="opt-text">3 or more <small>Multiple vehicles</small></div>
+          <div class="opt-check"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: ZIP -->
+    <div class="step" id="step2">
+      <div class="step-q">What's your zip code?</div>
+      <div class="step-hint">Coverage options vary by location — we'll show available offers in your area</div>
+      <div class="input-group">
+        <label>ZIP CODE</label>
+        <input type="text" id="zipInput" placeholder="e.g. 75201" maxlength="5" inputmode="numeric">
+      </div>
+      <button class="next-btn" onclick="handleZip()">Continue →</button>
+    </div>
+
+    <!-- STEP 3: Current insurance -->
+    <div class="step" id="step3">
+      <div class="step-q">Do you currently have auto insurance?</div>
+      <div class="step-hint">This helps us identify available coverage options for your situation</div>
+      <div class="options two-col">
+        <button class="opt-btn" onclick="selectOpt(this, 4, 'hasInsurance', 'yes')">
+          <div class="opt-icon">✅</div>
+          <div class="opt-text">Yes <small>I have active coverage</small></div>
+          <div class="opt-check"></div>
+        </button>
+        <button class="opt-btn" onclick="selectOpt(this, 4, 'hasInsurance', 'no')">
+          <div class="opt-icon">❌</div>
+          <div class="opt-text">No <small>I need new coverage</small></div>
+          <div class="opt-check"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Accidents -->
+    <div class="step" id="step4">
+      <div class="step-q">Any accidents or violations in the last 3 years?</div>
+      <div class="step-hint">This helps us identify available coverage options</div>
+      <div class="options">
+        <button class="opt-btn" onclick="selectOpt(this, 5, 'accidents', 'none')">
+          <div class="opt-icon">😊</div>
+          <div class="opt-text">Clean record <small>No accidents or tickets</small></div>
+          <div class="opt-check"></div>
+        </button>
+        <button class="opt-btn" onclick="selectOpt(this, 5, 'accidents', '1')">
+          <div class="opt-icon">⚠️</div>
+          <div class="opt-text">1 minor incident <small>Small ticket or fender bender</small></div>
+          <div class="opt-check"></div>
+        </button>
+        <button class="opt-btn" onclick="selectOpt(this, 5, 'accidents', '2+')">
+          <div class="opt-icon">🔶</div>
+          <div class="opt-text">2 or more <small>Multiple incidents</small></div>
+          <div class="opt-check"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 5: RESULTS + CTA -->
+    <div class="step" id="step5">
+      <a href="YOUR-HELLO-GENIUS-AFFILIATE-LINK" id="ctaHeader" class="results-header" style="display:flex; text-decoration:none; cursor:pointer;">
+        <span class="results-icon">✅</span>
+        <h2>Your profile is ready — compare available offers!</h2>
+        <span style="color:white; font-size:16px; margin-left:6px;">→</span>
+      </a>
+
+      <div class="match-box">
+        <div class="match-headline">🔍 Coverage options available in your area</div>
+        <div class="match-sub">Based on your answers, there may be coverage options available in your area. Compare available offers and explore options that may fit your needs.</div>
+      </div>
+
+      <div class="profile-summary" id="profileSummary">
+        <p>Profile: loading...</p>
+      </div>
+
+      <!-- PRIMARY CTA -->
+      <a href="YOUR-HELLO-GENIUS-AFFILIATE-LINK" id="ctaPrimary" class="cta-primary">
+        🚗 Compare Available Offers →
+      </a>
+
+      <p class="urgency-note">Takes minutes · No commitment required</p>
+
+      <!-- SECONDARY CTA -->
+      <a href="YOUR-HELLO-GENIUS-AFFILIATE-LINK" id="ctaSecondary" class="cta-secondary">
+        View Available Offers
+      </a>
+
+      <!-- TERTIARY CTA -->
+      <a href="YOUR-HELLO-GENIUS-AFFILIATE-LINK" id="ctaTertiary" class="cta-tertiary">
+        Explore Coverage Options In My Area
+      </a>
+
+      <p class="tcpa">By clicking above, you will be redirected to an independent insurance comparison platform. MyInsurancePal does not sell insurance. <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms</a></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- BELOW CARD TRUST -->
+<div class="below-trust">
+  <div class="below-trust-item">No spam calls</div>
+  <div class="below-trust-item">100% secure</div>
+  <div class="below-trust-item">Compare coverage options</div>
+</div>
+
+<!-- FOOTER TRUST -->
+<div class="footer-trust">
+  <div class="footer-trust-row">
+    <div class="footer-trust-item">No spam calls</div>
+    <div class="footer-trust-item">No obligation to purchase</div>
+    <div class="footer-trust-item">Secure & confidential</div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 MyInsurancePal · ACQ Lab Media LLC · 1021 E Lincolnway Suite 10325, Cheyenne WY 82001</p>
+  <p style="margin-top:6px;"><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Use</a></p>
+  <p style="margin-top:10px;max-width:600px;margin-left:auto;margin-right:auto;">This is a solicitation of insurance. By clicking, you will be redirected to an independent insurance comparison platform. MyInsurancePal does not sell insurance. Consent is not a condition of purchase.</p>
+</footer>
+
+<script>
+var currentStep = 1;
+var totalSteps = 5;
+var userData = { vehicles: '', zip: '', hasInsurance: '', accidents: '' };
+
+function selectOpt(btn, nextStep, key, value) {
+  var opts = btn.parentElement.querySelectorAll('.opt-btn');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  btn.classList.add('selected');
+  if (key) userData[key] = value;
+  setTimeout(function() { goToStep(nextStep); }, 300);
+}
+
+function handleZip() {
+  var zip = document.getElementById('zipInput').value.trim();
+  if (zip.length < 5) { alert('Please enter a valid 5-digit ZIP code.'); return; }
+  userData.zip = zip;
+  goToStep(4);
+}
+
+function goToStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step' + currentStep).classList.add('active');
+
+  var pct = Math.round((n / totalSteps) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('stepPct').textContent = pct + '%';
+
+  if (n === totalSteps) {
+    document.getElementById('stepLabel').textContent = 'Almost done!';
+    updateProfileSummary();
+    updateAffiliateLinks();
+  } else {
+    document.getElementById('stepLabel').textContent = 'Step ' + n + ' of ' + (totalSteps - 1);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProfileSummary() {
+  var vehicleText = userData.vehicles === '1' ? '1 vehicle' : userData.vehicles === '2' ? '2 vehicles' : '3+ vehicles';
+  var insuranceText = userData.hasInsurance === 'yes' ? 'currently insured' : 'currently uninsured';
+  var accidentText = userData.accidents === 'none' ? 'clean driving record' : userData.accidents === '1' ? '1 incident on record' : 'multiple incidents on record';
+  var el = document.getElementById('profileSummary');
+  el.innerHTML = '<p>Profile: <strong>' + vehicleText + '</strong> · ZIP <strong>' + userData.zip + '</strong> · ' + insuranceText + ' · <strong>' + accidentText + '</strong>. Coverage options may be available in your area.</p>';
+}
+
+function updateAffiliateLinks() {
+  // Replace YOUR-HELLO-GENIUS-AFFILIATE-LINK with your actual affiliate link
+  // You can append user data as URL parameters for tracking
+  var baseLink = 'YOUR-HELLO-GENIUS-AFFILIATE-LINK';
+  var params = '?vehicles=' + encodeURIComponent(userData.vehicles) +
+               '&zip=' + encodeURIComponent(userData.zip) +
+               '&insured=' + encodeURIComponent(userData.hasInsurance) +
+               '&accidents=' + encodeURIComponent(userData.accidents);
+
+  // Note: Only append params if Hello Genius supports them, otherwise use baseLink only
+  document.getElementById('ctaHeader').href = baseLink;
+  document.getElementById('ctaPrimary').href = baseLink;
+  document.getElementById('ctaSecondary').href = baseLink;
+  document.getElementById('ctaTertiary').href = baseLink;
+}
+</script>
+</body>
+</html>
