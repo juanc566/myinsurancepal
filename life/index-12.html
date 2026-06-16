@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyInsurancePal — Life Insurance Quotes</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1534414721538351');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1534414721538351&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #181818;
+  --bg2:     #1f1f1f;
+  --bg3:     #252525;
+  --card:    #222222;
+  --border:  #333333;
+  --gold:    #e8a020;
+  --gold2:   #d4911a;
+  --goldsft: #f0b84a;
+  --white:   #f0ede8;
+  --gray:    #999999;
+  --gray2:   #666666;
+  --success: #3aaa6a;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh; color: var(--white); }
+
+/* TOPBAR */
+.topbar { background: #111; padding: 8px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 1px solid var(--border); }
+.mip-verified { display: inline-flex; align-items: center; gap: 6px; background: rgba(232,160,32,0.08); border: 1px solid rgba(232,160,32,0.25); border-radius: 20px; padding: 4px 12px 4px 6px; }
+.mip-logo-sm { width: 22px; height: 22px; flex-shrink: 0; }
+.mip-verified span { color: var(--goldsft); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.topbar-divider { color: #333; font-size: 12px; }
+.topbar-text { color: #666; font-size: 11px; }
+
+/* HERO */
+.hero { background: #141414; padding: 22px 20px 0; text-align: center; border-bottom: 2px solid var(--gold); }
+.logo { font-family: 'DM Sans', sans-serif; color: var(--white); font-size: 15px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 18px; display: inline-block; text-decoration: none; text-transform: uppercase; cursor: default; }
+.logo span { color: var(--goldsft); }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(232,160,32,0.10); border: 1px solid rgba(232,160,32,0.25); border-radius: 6px; padding: 5px 14px; font-size: 11px; font-weight: 600; color: var(--goldsft); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+.hero h1 { font-family: 'Oswald', sans-serif; color: var(--white); font-size: clamp(26px, 6.5vw, 44px); line-height: 1.08; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 12px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.hero h1 em { color: var(--goldsft); font-style: normal; }
+.hero-sub { color: #8a8a8a; font-size: 14px; padding-bottom: 22px; max-width: 380px; margin: 0 auto; line-height: 1.65; display: block; }
+
+/* ABOVE-QUIZ CTA */
+.above-quiz-cta { max-width: 520px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 3; }
+.above-quiz-cta-inner { background: var(--card); border: 1px solid var(--border); border-top: none; padding: 20px 24px 16px; text-align: center; }
+.above-quiz-cta-inner p { font-size: 12px; color: #555; margin-bottom: 12px; }
+.cta-btn-top { display: block; background: var(--gold); color: #111; font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 700; padding: 16px 24px; border-radius: 8px; text-decoration: none; transition: all 0.2s; width: 100%; text-align: center; letter-spacing: 0.3px; text-transform: uppercase; }
+.cta-btn-top:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(232,160,32,0.2); }
+.cta-divider { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.cta-divider-line { flex: 1; height: 1px; background: var(--border); }
+.cta-divider-text { font-size: 11px; color: #555; white-space: nowrap; }
+
+/* QUIZ */
+.quiz-wrap { max-width: 520px; margin: 0 auto; padding: 0 16px 36px; }
+.quiz-card { background: var(--card); border: 1px solid var(--border); border-top: none; border-radius: 0 0 16px 16px; overflow: hidden; }
+.quiz-inner { padding: 20px 24px 24px; }
+.quiz-q { font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 600; color: var(--white); margin-bottom: 4px; text-align: center; text-transform: uppercase; letter-spacing: 0.2px; }
+.quiz-hint { font-size: 12px; color: #555; text-align: center; margin-bottom: 16px; }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quiz-opt { padding: 16px 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg3); cursor: pointer; font-family: 'DM Sans', sans-serif; color: var(--white); text-align: center; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+.quiz-opt:hover { border-color: var(--gold); background: #2a2a2a; transform: translateY(-1px); }
+.quiz-opt .opt-emoji { font-size: 24px; }
+.quiz-opt .opt-label { font-size: 15px; font-weight: 700; color: var(--white); }
+.quiz-opt .opt-sub { font-size: 11px; color: #666; font-weight: 400; }
+
+/* RESULT */
+.quiz-result { display: none; padding: 20px 24px 24px; }
+.result-header { background: var(--gold); border-radius: 8px; padding: 13px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; cursor: pointer; text-decoration: none; }
+.result-header:hover { background: var(--gold2); }
+.result-header-text { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 700; color: #111; flex: 1; text-transform: uppercase; }
+.result-header-arrow { color: #111; font-size: 18px; font-weight: 700; }
+.result-match { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.result-match-title { font-size: 13px; font-weight: 700; color: var(--goldsft); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+.result-match-sub { font-size: 13px; color: #aaa; line-height: 1.6; }
+.cta-btn { display: block; background: var(--gold); color: #111; font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 700; padding: 16px 24px; border-radius: 8px; text-decoration: none; transition: all 0.2s; width: 100%; text-align: center; margin-bottom: 10px; letter-spacing: 0.3px; text-transform: uppercase; }
+.cta-btn:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(232,160,32,0.2); }
+.cta-btn-secondary { display: block; background: transparent; color: var(--goldsft); border: 1.5px solid rgba(232,160,32,0.35); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.2s; width: 100%; text-align: center; margin-bottom: 8px; }
+.cta-btn-secondary:hover { background: rgba(232,160,32,0.07); border-color: var(--gold); }
+.cta-sub { font-size: 11px; color: #555; margin-top: 8px; text-align: center; }
+
+/* TRUST ROW */
+.trust-row { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; padding: 16px 24px; border-top: 1px solid var(--border); }
+.trust-item { display: flex; align-items: center; gap: 5px; color: #666; font-size: 12px; }
+.trust-item::before { content: '✓'; color: var(--goldsft); font-weight: 700; }
+
+/* STATS STRIP */
+.stats-strip { background: #111; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 16px; }
+.stats-inner { max-width: 520px; margin: 0 auto; display: flex; justify-content: center; }
+.stat-item { text-align: center; flex: 1; padding: 0 10px; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Oswald', sans-serif; font-size: 24px; color: var(--goldsft); font-weight: 700; }
+.stat-label { font-size: 10px; color: #666; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1.4; }
+
+/* FEAR SECTION */
+.fear-section { max-width: 520px; margin: 0 auto; padding: 32px 16px; }
+.fear-section h2 { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; color: var(--white); text-align: center; margin-bottom: 6px; }
+.fear-section h2 em { color: var(--goldsft); font-style: normal; }
+.fear-section > p { font-size: 13px; color: #777; text-align: center; margin-bottom: 20px; line-height: 1.6; }
+.fear-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.fear-item { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 10px; padding: 15px 18px; display: flex; align-items: flex-start; gap: 12px; }
+.fear-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.fear-text { font-size: 13px; color: #aaa; line-height: 1.6; }
+.fear-text strong { color: var(--white); display: block; margin-bottom: 2px; font-size: 14px; }
+
+/* BENEFITS */
+.benefits { max-width: 520px; margin: 0 auto; padding: 0 16px 32px; }
+.benefits h2 { font-family: 'Oswald', sans-serif; font-size: 20px; text-align: center; margin-bottom: 18px; color: var(--white); text-transform: uppercase; letter-spacing: 0.3px; }
+.benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .benefits-grid { grid-template-columns: 1fr; } .quiz-options { grid-template-columns: 1fr; } }
+.benefit-card { background: var(--card); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+.benefit-icon { font-size: 22px; margin-bottom: 8px; }
+.benefit-title { font-weight: 700; font-size: 13px; color: var(--white); margin-bottom: 4px; }
+.benefit-desc { font-size: 12px; color: #777; line-height: 1.5; }
+
+/* HOW IT WORKS */
+.how-it-works { background: #111; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 16px; text-align: center; }
+.how-inner { max-width: 520px; margin: 0 auto; }
+.how-label-top { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; }
+.how-steps { display: flex; justify-content: center; }
+.how-step { flex: 1; padding: 0 8px; text-align: center; position: relative; }
+.how-step:not(:last-child)::after { content: '→'; position: absolute; right: -6px; top: 9px; color: var(--gold); font-size: 14px; }
+.how-num { width: 34px; height: 34px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 15px; color: #111; }
+.how-text { font-size: 11px; color: #777; line-height: 1.4; }
+
+.disclosure-box { max-width: 520px; margin: 24px auto; padding: 0 16px; }
+.disclosure-inner { background: #161616; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; color: #555; font-size: 11px; line-height: 1.6; }
+.disclosure-inner strong { color: #777; }
+
+footer { background: #0e0e0e; color: #444; font-size: 11px; padding: 20px; text-align: center; line-height: 1.7; border-top: 1px solid var(--border); }
+footer a { color: #666; text-decoration: none; }
+
+/* EXIT INTENT OVERLAY */
+.exit-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+.exit-overlay.active { display: flex; }
+.exit-modal { background: #1a1a1a; border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 16px; max-width: 400px; width: 100%; padding: 28px 24px; text-align: center; position: relative; }
+.exit-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #555; font-size: 20px; cursor: pointer; line-height: 1; padding: 4px; }
+.exit-close:hover { color: #999; }
+.exit-emoji { font-size: 36px; margin-bottom: 12px; }
+.exit-title { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); text-transform: uppercase; line-height: 1.15; margin-bottom: 10px; }
+.exit-title em { color: var(--goldsft); font-style: normal; display: block; }
+.exit-sub { font-size: 13px; color: #888; line-height: 1.6; margin-bottom: 20px; }
+.exit-cta { display: block; background: var(--gold); color: #111; font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; padding: 15px 24px; border-radius: 8px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.3px; transition: all 0.2s; margin-bottom: 10px; }
+.exit-cta:hover { background: var(--gold2); }
+.exit-dismiss { background: none; border: none; color: #555; font-size: 12px; cursor: pointer; padding: 6px; text-decoration: underline; }
+.exit-dismiss:hover { color: #888; }
+</style>
+</head>
+<body>
+
+<!-- EXIT INTENT OVERLAY -->
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-modal">
+    <button class="exit-close" id="exitClose">✕</button>
+    <div class="exit-emoji">⚠️</div>
+    <div class="exit-title">Wait — your family<em>is still unprotected.</em></div>
+    <p class="exit-sub">It takes less than 60 seconds to see what coverage is available. Free, no obligation — don't leave without checking.</p>
+    <a class="exit-cta" href="#" id="exitCtaBtn">Compare My Free Quotes →</a>
+    <button class="exit-dismiss" id="exitDismiss">No thanks, I'll leave without checking</button>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="mip-verified">
+    <svg class="mip-logo-sm" viewBox="0 0 22 22" fill="none">
+      <path d="M11 2L3 6.5v9L11 20l8-4.5v-9L11 2z" fill="#e8a020" opacity="0.85"/>
+      <path d="M11 5L5.5 8.25v5.5L11 17l5.5-3.25v-5.5L11 5z" fill="white" opacity="0.08"/>
+      <path d="M8 11l2 2 4-4" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Secure comparison</span>
+  </div>
+  <span class="topbar-divider">·</span>
+  <span class="topbar-text">Free · No obligation · Quick process</span>
+</div>
+
+<div class="hero">
+  <!-- FUGA 1 CORREGIDA: logo sin href -->
+  <span class="logo">MyInsurance<span>Pal</span></span>
+  <div class="hero-eyebrow">Protect what matters most</div>
+  <h1>If you're gone tomorrow, <em>will they be okay?</em></h1>
+  <p class="hero-sub">Most families find out too late. It takes less than 60 seconds to see what coverage is available for you — free, no obligation.</p>
+</div>
+
+<div class="above-quiz-cta">
+  <div class="above-quiz-cta-inner">
+    <p>Free · No obligation · No credit card required</p>
+    <a class="cta-btn-top" href="#" id="ctaBtnTop">Compare My Free Quotes →</a>
+    <div class="cta-divider">
+      <div class="cta-divider-line"></div>
+      <span class="cta-divider-text">or answer one quick question below</span>
+      <div class="cta-divider-line"></div>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-wrap">
+  <div class="quiz-card">
+    <div class="quiz-inner" id="quizQuestion">
+      <div class="quiz-q">Who depends on your income?</div>
+      <div class="quiz-hint">This helps match you to the right options</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="selectAnswer('yes')">
+          <span class="opt-emoji">👨‍👩‍👧</span>
+          <span class="opt-label">My family</span>
+          <span class="opt-sub">Spouse, kids, or dependents</span>
+        </button>
+        <button class="quiz-opt" onclick="selectAnswer('no')">
+          <span class="opt-emoji">🙋</span>
+          <span class="opt-label">Just me</span>
+          <span class="opt-sub">No dependents yet</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-result" id="quizResult">
+      <a href="#" class="result-header" id="ctaHeader">
+        <span style="font-size:17px;">✅</span>
+        <span class="result-header-text">Options found — see your coverage now</span>
+        <span class="result-header-arrow">→</span>
+      </a>
+      <div class="result-match">
+        <div class="result-match-title">⚡ Coverage options available for your profile</div>
+        <div class="result-match-sub" id="resultText">Based on your answer, you can continue to a participating quote provider and review available life insurance options — at no cost, no obligation.</div>
+      </div>
+      <a class="cta-btn" href="#" id="ctaBtn">Compare My Free Quotes →</a>
+      <a class="cta-btn-secondary" href="#" id="ctaBtn2">See My Coverage Options →</a>
+      <p class="cta-sub">No obligation · No credit card required · Quick process</p>
+    </div>
+
+    <div class="trust-row">
+      <span class="trust-item">100% free</span>
+      <span class="trust-item">No obligation</span>
+      <span class="trust-item">Secure process</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">1 in 3</div>
+      <div class="stat-label">families have<br>no coverage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">60s</div>
+      <div class="stat-label">to see<br>your options</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">cost to<br>compare</div>
+    </div>
+  </div>
+</div>
+
+<div class="fear-section">
+  <h2>What happens to your family <em>if you're not here?</em></h2>
+  <p>These are the questions most people avoid — until it's too late.</p>
+  <div class="fear-grid">
+    <div class="fear-item">
+      <div class="fear-icon">🏠</div>
+      <div class="fear-text">
+        <strong>Mortgage payments don't stop</strong>
+        Without your income, your family could face losing their home within months.
+      </div>
+    </div>
+    <div class="fear-item">
+      <div class="fear-icon">📚</div>
+      <div class="fear-text">
+        <strong>Your kids' future changes overnight</strong>
+        College, stability, the life you planned for them — all uncertain without a safety net.
+      </div>
+    </div>
+    <div class="fear-item">
+      <div class="fear-icon">💸</div>
+      <div class="fear-text">
+        <strong>Bills pile up immediately</strong>
+        Medical, funeral, and daily expenses hit your family all at once, at their worst moment.
+      </div>
+    </div>
+    <div class="fear-item">
+      <div class="fear-icon">⏰</div>
+      <div class="fear-text">
+        <strong>Every year you wait, rates go up</strong>
+        Life insurance is cheapest when you're young and healthy. Today beats tomorrow.
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:26px;">
+    <a class="cta-btn" href="#" id="ctaBtnFear" style="max-width:380px; display:inline-block;">Compare My Free Quotes →</a>
+    <p style="font-size:11px; color:#555; margin-top:8px;">Free · No obligation · Takes 60 seconds</p>
+  </div>
+</div>
+
+<div class="benefits">
+  <h2>What you can compare</h2>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon">🛡️</div>
+      <div class="benefit-title">Term Life</div>
+      <div class="benefit-desc">Affordable coverage for a set period. Often the most cost-effective option for families.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🏦</div>
+      <div class="benefit-title">Whole Life</div>
+      <div class="benefit-desc">Lifetime coverage that builds cash value over time.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🕊️</div>
+      <div class="benefit-title">Final Expense</div>
+      <div class="benefit-desc">Coverage designed to help with end-of-life costs and protect your family from that burden.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">⚡</div>
+      <div class="benefit-title">Fast Next Step</div>
+      <div class="benefit-desc">Continue to a participating provider and review available options in minutes.</div>
+    </div>
+  </div>
+</div>
+
+<div class="how-it-works">
+  <div class="how-inner">
+    <div class="how-label-top">How it works</div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-text">Answer one quick question</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-text">Continue securely</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-text">Review available options</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:26px;">
+      <a class="cta-btn" href="#" id="ctaBtnHow" style="max-width:380px; display:inline-block;">Compare My Free Quotes →</a>
+    </div>
+  </div>
+</div>
+
+<div class="disclosure-box">
+  <div class="disclosure-inner">
+    <strong>Disclosure:</strong> MyInsurancePal is not an insurance carrier, agency, or broker. This page is for informational and comparison purposes only. By clicking a button, you may be redirected to a participating partner site to continue your quote request. Coverage, pricing, and eligibility vary by provider and individual factors.
+  </div>
+</div>
+
+<div style="background:#111; border-top:2px solid var(--gold); padding:40px 16px; text-align:center;">
+  <p style="font-family:'Oswald',sans-serif; font-size:24px; font-weight:700; color:var(--white); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:8px; max-width:420px; margin-left:auto; margin-right:auto; line-height:1.2;">Don't leave your family without a plan.</p>
+  <p style="font-size:13px; color:#666; margin-bottom:24px; max-width:340px; margin-left:auto; margin-right:auto; line-height:1.65;">It takes 60 seconds. It costs nothing to compare. The only risk is waiting.</p>
+  <a class="cta-btn" href="#" id="ctaBtnFinal" style="max-width:380px; display:inline-block;">Compare My Free Quotes →</a>
+  <p style="font-size:11px; color:#444; margin-top:12px;">Free · No obligation · Quick process</p>
+</div>
+
+<!-- FUGA 2 CORREGIDA: links de footer sin href externo -->
+<footer>
+  <p>© 2026 MyInsurancePal · ACQ Lab Media LLC · 1021 E Lincolnway Suite 10325, Cheyenne WY 82001</p>
+  <!-- FUGA 3 CORREGIDA: Privacy y Terms abren en nueva pestaña para no sacar al usuario de la bridge -->
+  <p style="margin-top:6px;"><a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> · <a href="/terms.html" target="_blank" rel="noopener">Terms of Use</a></p>
+  <p style="margin-top:10px;max-width:600px;margin-left:auto;margin-right:auto;">MyInsurancePal is a marketing and comparison website, not an insurance carrier, agency, or broker. We do not provide insurance advice, make underwriting decisions, or guarantee coverage, pricing, savings, or approval. We may receive compensation when users click links or submit information on partner websites.</p>
+</footer>
+
+<script>
+var AFFILIATE_LINK = 'https://afflat3c2.com/trk/lnk/25254F96-B555-4099-A52E-341B68652D6C/?o=26462&c=918277&a=796915&k=08D1746BD4ECA24AC253750EA5C577C5&l=28035&s1=meta_social';
+var exitShown = false;
+
+var resultTexts = {
+  yes: 'Your family depends on you — that\'s exactly who life insurance protects. Based on your answer, you can continue to a participating quote provider and review available coverage options right now, at no cost.',
+  no:  'Even without dependents today, locking in coverage now means better rates and peace of mind for the future. Based on your answer, you can continue to review what\'s available for your situation.'
+};
+
+function buildAffiliateUrl(baseUrl) {
+  var params = new URLSearchParams(window.location.search);
+  var url = new URL(baseUrl, window.location.href);
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k) {
+    if (params.get(k)) url.searchParams.set(k, params.get(k));
+  });
+  return url.toString();
+}
+
+function setAllAffiliateLinks() {
+  var finalUrl = buildAffiliateUrl(AFFILIATE_LINK);
+  ['ctaBtnTop','ctaHeader','ctaBtn','ctaBtn2','ctaBtnFear','ctaBtnHow','ctaBtnFinal','exitCtaBtn'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.href = finalUrl;
+  });
+}
+
+function selectAnswer(answer) {
+  document.getElementById('resultText').textContent = resultTexts[answer] || resultTexts['yes'];
+  document.getElementById('quizQuestion').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (typeof fbq !== 'undefined') {
+    fbq('trackCustom', 'BridgeEngagement', { answer: answer });
+  }
+}
+
+function showExitOverlay() {
+  if (exitShown) return;
+  exitShown = true;
+  document.getElementById('exitOverlay').classList.add('active');
+  if (typeof fbq !== 'undefined') {
+    fbq('trackCustom', 'ExitIntentShown');
+  }
+}
+
+function hideExitOverlay() {
+  document.getElementById('exitOverlay').classList.remove('active');
+}
+
+// EXIT INTENT: desktop — mouse leaves top of viewport
+document.addEventListener('mouseleave', function(e) {
+  if (e.clientY < 20) showExitOverlay();
+});
+
+// Mobile scroll-up trigger — conservative threshold
+var lastScrollY = 0;
+var scrollTriggerFired = false;
+window.addEventListener('scroll', function() {
+  var currentY = window.scrollY;
+  if (!scrollTriggerFired && lastScrollY > 700 && currentY < lastScrollY - 80) {
+    scrollTriggerFired = true;
+    showExitOverlay();
+  }
+  lastScrollY = currentY;
+}, { passive: true });
+
+document.getElementById('exitClose').addEventListener('click', hideExitOverlay);
+document.getElementById('exitDismiss').addEventListener('click', hideExitOverlay);
+document.getElementById('exitOverlay').addEventListener('click', function(e) {
+  if (e.target === this) hideExitOverlay();
+});
+
+setAllAffiliateLinks();
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('a.cta-btn, a.cta-btn-secondary, a.cta-btn-top, a.result-header, a.exit-cta');
+  if (!btn) return;
+  var href = btn.getAttribute('href');
+  if (!href || href === '#') return;
+  e.preventDefault();
+  hideExitOverlay();
+  if (typeof fbq !== 'undefined') {
+    fbq('trackCustom', 'OutboundQuoteClick');
+    fbq('track', 'Lead');
+  }
+  setTimeout(function() { window.location.href = href; }, 300);
+});
+</script>
+
+</body>
+</html>
